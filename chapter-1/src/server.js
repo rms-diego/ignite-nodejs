@@ -1,5 +1,5 @@
 const express = require("express");
-const { v4: uuid } = require ("uuid");
+const { v4: uuid } = require("uuid");
 
 const app = express();
 const PORT = 3333;
@@ -9,29 +9,35 @@ app.use(express.urlencoded({ extended: true }));
 
 const customers = [];
 
-app.post("/create", (request, response) => {
+app.post("/account", (request, response) => {
   const { name, cpf } = request.body;
 
-  const custumerAlreadyExists = customers.some(customer => customer.cpf === cpf);
-
-  if (custumerAlreadyExists) return (
-    response.status(400).json({error: 'Custumer already exists'})
+  const custumerAlreadyExists = customers.some(
+    customer => customer.cpf === cpf
   );
-  
+
+  if (custumerAlreadyExists) {
+    return response.status(400).json({ error: "Custumer already exists" });
+  } 
+
   const customer = {
     id: uuid(),
     name,
     cpf,
     statement: [],
-
   };
 
   customers.push(customer);
-  
-  console.log(customers);
-  return response.send('client created').status(201)
+
+  return response.status(201).send("client created");
 });
 
-app.listen(PORT, () =>
-  console.log(`🚀 Server up !🚀\nhttp://localhost:${PORT}`)
-);
+app.get('/statement/:cpf', (request, response) => {
+  const { cpf } = request.params;
+
+  const customer = customers.find(customer => customer.cpf === cpf);
+
+  return response.status(200).send(customer.statement);
+});
+
+app.listen(PORT, () => console.log(`🚀 Server up !🚀\nhttp://localhost:${PORT}`));
