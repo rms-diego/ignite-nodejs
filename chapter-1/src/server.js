@@ -49,10 +49,27 @@ app.post("/account", (request, response) => {
 });
 
 app.get('/statement', verifyExistAccountCpf, (request, response) => {
-  console.log(request);
+
   const { customer } = request;
 
   return response.status(200).send(customer.statement);
+});
+
+app.post("/deposit", verifyExistAccountCpf,(request, response) => {
+  const { description, amount } = request.body;
+
+  const { customer } = request;
+
+  const statementOperation = {
+    description,
+    amount,
+    createdAt: new Date(),
+    type: "credit"
+  }
+
+  customer.statement.push(statementOperation);
+
+  return response.status(201).send()
 });
 
 app.listen(PORT, () => console.log(`🚀 Server up !🚀\nhttp://localhost:${PORT}`));
