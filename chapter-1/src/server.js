@@ -10,7 +10,7 @@ app.post("/courses", (request, response) => {
   return response.status(200).json(["Curso 1", "Curso 2", "Curso 3", "Curso 4"]);
 });
 
-app.put("/course/:id", (request, response) => {
+app.put("/courses/:id", (request, response) => {
   return response.status(200).json(["Curso 6", "Curso 2", "Curso 3", "Curso 4"]);
 });
 
