@@ -6,6 +6,19 @@ app.use(express.json());
 
 const customers = [];
 
+// middleware
+const veryfiIfExistAccountCPF = (req, res, next) => {
+  const { cpf } = req.headers;
+
+  const customerFinded = customers.find((customer) => customer.cpf === cpf);
+  if (!customerFinded) return res.status(400).json({ error: "customer not found" });
+
+  req.customer = customerFinded;
+
+  return next();
+}
+
+//routes
 app.post("/account", (req, res) => {
   const { name, cpf } = req.body;
 
@@ -17,14 +30,10 @@ app.post("/account", (req, res) => {
   return res.status(201).end();
 });
 
-app.get("/statement", (req, res) => {
-  const { cpf } = req.headers;
+app.get("/statement", veryfiIfExistAccountCPF, (req, res) => {
+  const { customer } = req;
 
-  const customerFinded = customers.find((customer) => customer.cpf === cpf);
-
-  if (!customerFinded) return res.status(400).json({ error: "customer not found" });
-
-  return res.status(200).json(customerFinded.statement);
+  return res.status(200).json(customer.statement);
 });
 
 app.listen(3333, () => console.log(`Server up 🚀\nhttp://localhost:3333`));
