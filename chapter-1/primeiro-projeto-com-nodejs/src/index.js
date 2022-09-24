@@ -11,7 +11,7 @@ app.post("/account", (req, res) => {
 
   const accountExists = customers.some((account) => account.cpf === cpf);
 
-  if (accountExists) return res.json({ message: "This account exists" });
+  if (accountExists) return res.status(400).json({ error: "account alredy exists" });
 
   customers.push({ id: uuid(), name, cpf, statement: [] });
   return res.status(201).end();
