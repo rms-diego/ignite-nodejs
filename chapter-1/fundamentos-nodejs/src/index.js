@@ -1,7 +1,7 @@
 const app = require("express")();
 
 app.get("/", (req, res) => {
-  return res.status(200).json({ message: "Olá mundo !" });
+  return res.status(200).json({ message: "Hello world ignite - Fundamentos NodeJs" });
 });
 
 app.listen(3333, () =>
