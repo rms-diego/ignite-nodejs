@@ -18,6 +18,17 @@ const veryfiIfExistAccountCPF = (req, res, next) => {
   return next();
 }
 
+
+// utils functions
+const getBalance = (statement) => {
+  const amount = statement.reduce((acc, currentValue) => {
+    if (currentValue.type === 'credit') return acc + currentValue.amount;
+    return acc - currentValue.amount;
+  }, 0);
+
+  return amount;
+}
+
 //routes
 app.post("/account", (req, res) => {
   const { name, cpf } = req.body;
@@ -47,6 +58,25 @@ app.post("/deposit", veryfiIfExistAccountCPF, (req, res) => {
     description,
     createdAt: new Date().toLocaleString(),
     type: 'credit'
+  });
+
+  return res.status(201).end();
+
+})
+
+app.post("/withdraw", veryfiIfExistAccountCPF, (req, res) => {
+  const { amount } = req.body;
+  const { customer } = req;
+
+  const balance = getBalance(customer.statement);
+
+  if (balance < amount) return res.status(400).json({ error: "insufficient funds" })
+
+  customer.statement.push({
+    id: uuid(),
+    amount,
+    createdAt: new Date().toLocaleString(),
+    type: 'withdraw'
   });
 
   return res.status(201).end();
