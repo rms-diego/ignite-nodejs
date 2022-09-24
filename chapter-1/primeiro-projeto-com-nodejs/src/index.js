@@ -36,4 +36,21 @@ app.get("/statement", veryfiIfExistAccountCPF, (req, res) => {
   return res.status(200).json(customer.statement);
 });
 
+
+app.post("/deposit", veryfiIfExistAccountCPF, (req, res) => {
+  const { amount, description } = req.body;
+  const { customer } = req;
+
+  customer.statement.push({
+    id: uuid(),
+    amount,
+    description,
+    createdAt: new Date().toLocaleString(),
+    type: 'credit'
+  });
+
+  return res.status(201).end();
+
+})
+
 app.listen(3333, () => console.log(`Server up 🚀\nhttp://localhost:3333`));
