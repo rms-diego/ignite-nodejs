@@ -48,6 +48,18 @@ app.get("/statement", veryfiIfExistAccountCPF, (req, res) => {
 });
 
 
+app.get("/statement/date", veryfiIfExistAccountCPF, (req, res) => {
+  const { date } = req.query;
+  const { customer } = req;
+
+  const statement = customer.statement.filter((statement) => statement.createdAt.includes(date));
+
+  if (!statement.length) return res.status(400).json({ error: 'statement not found' })
+
+  return res.status(200).json(statement);
+});
+
+
 app.post("/deposit", veryfiIfExistAccountCPF, (req, res) => {
   const { amount, description } = req.body;
   const { customer } = req;
