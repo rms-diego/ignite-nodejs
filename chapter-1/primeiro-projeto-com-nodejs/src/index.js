@@ -95,4 +95,13 @@ app.post("/withdraw", veryfiIfExistAccountCPF, (req, res) => {
 
 })
 
+app.put("/account", veryfiIfExistAccountCPF, (req, res) => {
+  const { name } = req.body;
+  const { customer } = req;
+
+  customer.name = name;
+
+  return res.status(200).end();
+});
+
 app.listen(3333, () => console.log(`Server up 🚀\nhttp://localhost:3333`));
