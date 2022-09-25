@@ -104,4 +104,20 @@ app.put("/account", veryfiIfExistAccountCPF, (req, res) => {
   return res.status(200).end();
 });
 
+app.delete("/account", veryfiIfExistAccountCPF, (req, res) => {
+  const { customer } = req;
+
+  customer.splice(customer, 1);
+
+  return res.status(204).json(customers);
+})
+
+app.get("/balance", veryfiIfExistAccountCPF, (req, res) => {
+  const { customer } = req;
+
+  const balance = getBalance(customer.statement)
+
+  return res.status(200).json(balance);
+})
+
 app.listen(3333, () => console.log(`Server up 🚀\nhttp://localhost:3333`));
