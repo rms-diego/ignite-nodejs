@@ -1,14 +1,19 @@
 import { Router } from "express";
-import { randomUUID as uuid } from "crypto";
+
+import { Category } from "../model/Category";
 
 const categoriesRoutes = Router();
 
-const categories = [];
+const categories: Category[] = [];
 
 categoriesRoutes.post("/", (req, res) => {
   const { name, description } = req.body;
 
-  const category = { id: uuid(), name, description };
+  const category = new Category({
+    name,
+    description,
+    createdAt: new Date().toLocaleString(),
+  });
 
   categories.push(category);
 
