@@ -24,8 +24,14 @@ class CategoryRepository {
     return { ...category };
   }
 
-  getAll() {
-    return this.categories;
+  getAll = () => this.categories;
+
+  findByName(name: string) {
+    const categoryExists = this.categories.find(
+      (category) => category.name === name
+    );
+
+    return categoryExists;
   }
 }
 
