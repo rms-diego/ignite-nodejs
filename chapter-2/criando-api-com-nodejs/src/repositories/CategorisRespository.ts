@@ -23,6 +23,10 @@ class CategoryRepository {
 
     return { ...category };
   }
+
+  getAll() {
+    return this.categories;
+  }
 }
 
 export default new CategoryRepository();

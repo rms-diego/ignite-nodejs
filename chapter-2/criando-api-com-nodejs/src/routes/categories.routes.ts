@@ -15,4 +15,10 @@ categoriesRoutes.post("/", (req, res) => {
   return res.status(201).json(categoryCreated);
 });
 
+categoriesRoutes.get("/getAll", (req, res) => {
+  const allCategories = CategoryRepository.getAll();
+
+  return res.status(200).json(allCategories);
+});
+
 export { categoriesRoutes };
