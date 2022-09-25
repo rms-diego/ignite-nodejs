@@ -4,7 +4,6 @@ import CreateCourseService from "./CreateCourseService";
 export const createCourse = (request: Request, response: Response) => {
   CreateCourseService.execute({
     name: "nome lalaa",
-    duration: 3000,
     educator: "Diego Ramos",
   });
 

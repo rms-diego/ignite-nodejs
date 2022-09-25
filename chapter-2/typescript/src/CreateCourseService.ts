@@ -1,6 +1,6 @@
 interface ICourse {
   name: string;
-  duration: number;
+  duration?: number;
   educator: string;
 }
 
