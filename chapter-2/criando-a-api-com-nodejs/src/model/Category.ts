@@ -1,13 +1,12 @@
-import { ICategory } from "../@types";
 import crypto from "crypto";
 
-class Category implements ICategory {
-  id: string;
+class Category {
+  id?: string;
   name: string;
   description: string;
   created_at: string;
 
-  constructor({ id, name, description, created_at }: ICategory) {
+  constructor({ id, name, description, created_at }: Category) {
     if (id) this.id = id;
 
     this.id = crypto.randomUUID();
