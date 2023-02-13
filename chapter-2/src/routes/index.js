@@ -31,6 +31,10 @@ routes.get("/statement/:id", (request, response) => {
 
   const userFound = accounts.find((account) => account.id === id);
 
+  if (!userFound) {
+    return response.status(404).json({ message: "customer does not exists" });
+  }
+
   return response.status(200).json(userFound.statement);
 });
 
