@@ -6,7 +6,7 @@ const routes = Router();
 const accounts = [];
 
 const verifyExistentCpf = (request, response, next) => {
-  const { cpf } = request.body;
+  const { cpf } = request.headers;
 
   const userFound = accounts.find((account) => account.cpf === cpf);
 
@@ -44,6 +44,21 @@ routes.get("/statement", verifyExistentCpf, (request, response) => {
   const { customer } = request;
 
   return response.status(200).json(customer.statement);
+});
+
+routes.post("/deposit", verifyExistentCpf, (request, response) => {
+  const { customer } = request;
+  const { description, amount } = request.body;
+
+  const newOperation = {
+    amount,
+    description,
+    createdAt: new Date().toLocaleString(),
+    type: "credit",
+  };
+
+  customer.statement.push(newOperation);
+  return response.status(201).json(customer.statement);
 });
 
 module.exports = routes;
