@@ -5,6 +5,20 @@ const routes = Router();
 
 const accounts = [];
 
+const verifyExistentCpf = (request, response, next) => {
+  const { cpf } = request.body;
+
+  const userFound = accounts.find((account) => account.cpf === cpf);
+
+  if (!userFound) {
+    return response.status(404).json({ message: "customer does not exists" });
+  }
+
+  request.customer = userFound;
+
+  next();
+};
+
 routes.post("/account", (request, response) => {
   const { cpf, name } = request.body;
 
@@ -26,16 +40,10 @@ routes.post("/account", (request, response) => {
   return response.status(201).json(accountCreated);
 });
 
-routes.get("/statement/:id", (request, response) => {
-  const { id } = request.params;
+routes.get("/statement", verifyExistentCpf, (request, response) => {
+  const { customer } = request;
 
-  const userFound = accounts.find((account) => account.id === id);
-
-  if (!userFound) {
-    return response.status(404).json({ message: "customer does not exists" });
-  }
-
-  return response.status(200).json(userFound.statement);
+  return response.status(200).json(customer.statement);
 });
 
 module.exports = routes;
