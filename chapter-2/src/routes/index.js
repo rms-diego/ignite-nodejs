@@ -23,7 +23,15 @@ routes.post("/account", (request, response) => {
 
   accounts.push(accountCreated);
 
-  return response.status(201).json(accounts);
+  return response.status(201).json(accountCreated);
+});
+
+routes.get("/statement/:id", (request, response) => {
+  const { id } = request.params;
+
+  const userFound = accounts.find((account) => account.id === id);
+
+  return response.status(200).json(userFound.statement);
 });
 
 module.exports = routes;
