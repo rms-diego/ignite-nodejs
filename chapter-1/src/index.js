@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 
 const courses = ["course 1", "course 2", "course 3", "course 4", "course 5"];
+
 app.get("/course", (request, response) => {
   return response.json(courses);
 });
