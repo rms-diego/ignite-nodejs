@@ -58,6 +58,20 @@ routes.get("/statement", verifyExistentCpf, (request, response) => {
   return response.status(200).json(customer.statement);
 });
 
+routes.get("/statement/date", verifyExistentCpf, (request, response) => {
+  const { customer } = request;
+  const { date } = request.query;
+
+  const dateFormat = new Date(date + " 00:00");
+
+  const statement = customer.statement.filter(
+    (statement) =>
+      statement.createdAt.toDateString() === dateFormat.toDateString()
+  );
+
+  return response.status(200).json(statement);
+});
+
 routes.post("/deposit", verifyExistentCpf, (request, response) => {
   const { customer } = request;
   const { description, amount } = request.body;
@@ -65,7 +79,7 @@ routes.post("/deposit", verifyExistentCpf, (request, response) => {
   const newOperation = {
     amount,
     description,
-    createdAt: new Date().toLocaleString(),
+    createdAt: new Date(),
     type: "credit",
   };
 
@@ -87,7 +101,7 @@ routes.post("/withdraw", verifyExistentCpf, (request, response) => {
 
   const newOperation = {
     amount,
-    createdAt: new Date().toLocaleString(),
+    createdAt: new Date(),
     type: "debit",
   };
 
