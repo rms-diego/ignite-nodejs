@@ -49,7 +49,32 @@ routes.post("/account", (request, response) => {
 
   accounts.push(accountCreated);
 
-  return response.status(201).json(accountCreated);
+  return response.status(201).json({ message: "User Created" });
+});
+
+routes.delete("/account", verifyExistentCpf, (request, response) => {
+  const { customer } = request;
+
+  accounts.splice(customer, 1);
+
+  console.log(accounts);
+
+  return response.status(201).json({ message: "User Deleted" });
+});
+
+routes.get("/account", verifyExistentCpf, (request, response) => {
+  const { customer } = request;
+
+  return response.status(200).json(customer);
+});
+
+routes.put("/account", verifyExistentCpf, (request, response) => {
+  const { name } = request.body;
+  const { customer } = request;
+
+  customer.name = name;
+
+  return response.status(201).json({ message: "User edited" });
 });
 
 routes.get("/statement", verifyExistentCpf, (request, response) => {
