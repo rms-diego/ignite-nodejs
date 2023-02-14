@@ -10,6 +10,11 @@ class CourseController {
       educator: "Diego Ramos",
     });
 
+    CreateCourseService.execute({
+      name: "React",
+      educator: "Fulano de tal",
+    });
+
     return response.status(200).send();
   }
 }
