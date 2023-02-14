@@ -19,6 +19,18 @@ const verifyExistentCpf = (request, response, next) => {
   next();
 };
 
+const getBalance = (statement) => {
+  const balance = statement.reduce((acc, operation) => {
+    if (operation.type === "credit") {
+      return (acc += operation.amount);
+    }
+
+    return (acc -= operation.amount);
+  }, 0);
+
+  return balance;
+};
+
 routes.post("/account", (request, response) => {
   const { cpf, name } = request.body;
 
@@ -58,7 +70,34 @@ routes.post("/deposit", verifyExistentCpf, (request, response) => {
   };
 
   customer.statement.push(newOperation);
-  return response.status(201).json(customer.statement);
+  const balance = getBalance(customer.statement);
+
+  return response.status(201).json({ balance, operations: customer.statement });
+});
+
+routes.post("/withdraw", verifyExistentCpf, (request, response) => {
+  const { amount } = request.body;
+  const { customer } = request;
+
+  const balance = getBalance(customer.statement);
+
+  if (balance < amount) {
+    return response.status(500).json({ error: "insufficient balance" });
+  }
+
+  const newOperation = {
+    amount,
+    createdAt: new Date().toLocaleString(),
+    type: "debit",
+  };
+
+  customer.statement.push(newOperation);
+
+  const updatedBalance = balance - amount;
+
+  return response
+    .status(201)
+    .json({ balance: updatedBalance, operations: customer.statement });
 });
 
 module.exports = routes;
