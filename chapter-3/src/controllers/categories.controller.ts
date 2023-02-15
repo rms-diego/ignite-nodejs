@@ -1,26 +1,26 @@
 import { Request, Response } from "express";
-
-import { categoriesRepository } from "../repositories/Categories.repository";
+import { CategoriesService } from "../service/Categories.service";
 
 class CategoriesController {
   static createCategory(request: Request, response: Response) {
-    const { name, description } = request.body;
+    try {
+      const { name, description } = request.body;
 
-    const categoryAlreadyExists = categoriesRepository.findByName(name);
+      CategoriesService.createCategory({
+        name,
+        description,
+      });
 
-    if (categoryAlreadyExists) {
-      return response
-        .status(400)
-        .json({ error: "This category already exists" });
+      return response.status(201).json({ message: "Category created" });
+    } catch (error) {
+      if (error instanceof Error) {
+        return response.status(400).json({ error: error.message });
+      }
     }
-
-    categoriesRepository.create({ name, description });
-
-    return response.status(201).json({ message: "Category created" });
   }
 
   static listCategories(_request: Request, response: Response) {
-    const categories = categoriesRepository.getCategories();
+    const categories = CategoriesService.getCategories();
 
     return response.status(200).json(categories);
   }
