@@ -8,9 +8,13 @@ class CategoriesController {
 
     categoriesRepository.create({ name, description });
 
-    console.log(categoriesRepository.getCategories());
-
     return response.status(201).json({ message: "Category created" });
+  }
+
+  static listCategories(_request: Request, response: Response) {
+    const categories = categoriesRepository.getCategories();
+
+    return response.status(200).json(categories);
   }
 }
 

@@ -9,4 +9,6 @@ categoriesRoutes.post(
   CategoriesController.createCategory
 );
 
+categoriesRoutes.get("/categories/list", CategoriesController.listCategories);
+
 export { categoriesRoutes };
