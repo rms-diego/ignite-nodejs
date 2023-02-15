@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { CourseController } from "../controllers/CourseController";
+
+import { categoriesRoutes } from "./categories.routes";
 
 const routes = Router();
 
@@ -7,6 +8,6 @@ routes.get("/", (request, response) =>
   response.json({ message: "hello world !" })
 );
 
-routes.get("/course/create", CourseController.createCourse);
+routes.use(categoriesRoutes);
 
 export { routes };
