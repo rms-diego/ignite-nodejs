@@ -1,17 +1,14 @@
 import { Request, Response } from "express";
-import { Category } from "../model/Category";
 
-const categories: Category[] = [];
+import { categoriesRepository } from "../repositories/Categories.repository";
 
 class CategoriesController {
   static createCategory(request: Request, response: Response) {
     const { name, description } = request.body;
 
-    const category = new Category({ name, description });
+    categoriesRepository.create({ name, description });
 
-    categories.push({ ...category });
-
-    console.log(category);
+    console.log(categoriesRepository.getCategories());
 
     return response.status(201).json({ message: "Category created" });
   }

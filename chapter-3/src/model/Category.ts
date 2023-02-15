@@ -1,9 +1,6 @@
 import { randomUUID } from "crypto";
 
-type CategoryDTO = {
-  name: string;
-  description: string;
-};
+import { CreateCategoryDTO } from "../@types";
 
 class Category {
   id: string;
@@ -11,7 +8,7 @@ class Category {
   description: string;
   createdAt: Date;
 
-  constructor({ name, description }: CategoryDTO) {
+  constructor({ name, description }: CreateCategoryDTO) {
     this.id = randomUUID();
     this.name = name;
     this.description = description;
