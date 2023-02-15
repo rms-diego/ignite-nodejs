@@ -9,14 +9,18 @@ class CategoriesRepository {
     this.categories = [];
   }
 
-  public create({ name, description }: CreateCategoryDTO) {
+  create({ name, description }: CreateCategoryDTO) {
     const category = new Category({ name, description });
 
     this.categories.push({ ...category });
   }
 
-  public getCategories() {
+  getCategories() {
     return this.categories;
+  }
+
+  findByName(name: string) {
+    return this.categories.find((category) => category.name === name);
   }
 }
 
