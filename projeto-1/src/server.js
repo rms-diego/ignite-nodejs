@@ -7,10 +7,10 @@ const users = [];
 const server = http.createServer((request, response) => {
   const { method, url } = request;
 
+  response.setHeader("content-type", "application/json");
+
   if (method === "GET" && url === "/users") {
-    return response
-      .setHeader("content-type", "application/json")
-      .end(JSON.stringify(users));
+    return response.end(JSON.stringify(users));
   }
 
   if (method === "POST" && url === "/users") {
@@ -20,10 +20,12 @@ const server = http.createServer((request, response) => {
       email: "diegoramos@email.com",
     });
 
-    return response.end();
+    return response.writeHead(201).end();
   }
 
-  return response.end("Hello world!");
+  return response
+    .writeHead(404)
+    .end(JSON.stringify({ error: "endpoint not found" }));
 });
 
 server.listen(3000, () => console.log("Server up"));
