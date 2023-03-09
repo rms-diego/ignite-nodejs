@@ -1,6 +1,6 @@
 import { Readable, Transform, Writable } from "node:stream";
 
-class oneToHundredStream extends Readable {
+class OneToHundredStream extends Readable {
   index = 1;
 
   _read() {
@@ -16,14 +16,14 @@ class oneToHundredStream extends Readable {
   }
 }
 
-class multiplyByTemStream extends Writable {
+class MultiplyByTemStream extends Writable {
   _write(chunk, encoding, callback) {
     console.log(Number(chunk.toString()) * 10);
     callback();
   }
 }
 
-class invertNumber extends Transform {
+class InvertNumberStream extends Transform {
   _transform(chunk, encoding, callback) {
     const transformed = Number(chunk.toString()) * -1;
 
@@ -31,6 +31,6 @@ class invertNumber extends Transform {
   }
 }
 
-new oneToHundredStream()
-  .pipe(new invertNumber())
-  .pipe(new multiplyByTemStream());
+new OneToHundredStream()
+  .pipe(new InvertNumberStream())
+  .pipe(new MultiplyByTemStream());
