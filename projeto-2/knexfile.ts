@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./src/env";
 
 import { config } from "./src/database";
 

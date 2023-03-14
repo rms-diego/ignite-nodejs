@@ -1,3 +1,5 @@
+import { env } from "./env";
+
 import { app } from "./app";
 import { knex } from "./database";
 
@@ -15,4 +17,4 @@ app.get("/", async () => {
   return transaction;
 });
 
-app.listen({ port: 3333 }, () => console.log("Server running"));
+app.listen({ port: env.PORT }, () => console.log("Server running"));
