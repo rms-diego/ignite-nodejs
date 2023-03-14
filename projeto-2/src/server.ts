@@ -4,9 +4,7 @@ import { knex } from "./database";
 app.get("/", async () => {
   const test = await knex("sqlite_schema").select("*");
 
-  console.log(test);
-
-  return { message: "hello world" };
+  return test;
 });
 
 app.listen({ port: 3333 }, () => console.log("Server running"));
