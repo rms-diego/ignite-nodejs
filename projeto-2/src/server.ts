@@ -1,5 +1,4 @@
 import { app } from "./app";
-
 import { knex } from "./database";
 
 app.get("/", async () => {
