@@ -1,10 +1,18 @@
 import { app } from "./app";
 import { knex } from "./database";
 
-app.get("/", async () => {
-  const test = await knex("sqlite_schema").select("*");
+import { randomUUID } from "crypto";
 
-  return test;
+app.get("/", async () => {
+  const transaction = await knex("transactions")
+    .insert({
+      id: randomUUID(),
+      title: "transação teste",
+      amount: 1000,
+    })
+    .returning("*");
+
+  return transaction;
 });
 
 app.listen({ port: 3333 }, () => console.log("Server running"));
