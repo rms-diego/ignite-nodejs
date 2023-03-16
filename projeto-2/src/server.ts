@@ -1,20 +1,13 @@
 import { env } from "./env";
 
 import { app } from "./app";
-import { knex } from "./database";
 
-import { randomUUID } from "crypto";
+// routes
+import { transactionsRoutes } from "./routes/transactions";
 
-app.get("/", async () => {
-  const transaction = await knex("transactions")
-    .insert({
-      id: randomUUID(),
-      title: "transação teste",
-      amount: 1000,
-    })
-    .returning("*");
+app.register(transactionsRoutes);
 
-  return transaction;
+app.listen({ port: env.PORT }, (error, address) => {
+  if (error) console.error(error);
+  console.log("Server running\nlink: %s", address);
 });
-
-app.listen({ port: env.PORT }, () => console.log("Server running"));
