@@ -1,4 +1,5 @@
 import "dotenv/config";
+
 import { z as zod } from "zod";
 
 const envSchema = zod.object({
@@ -6,15 +7,18 @@ const envSchema = zod.object({
     .enum(["development", "test", "production"])
     .default("production"),
   DATABASE_URL: zod.string(),
-  PORT: zod.number().default(3333),
+  PORT: zod.string().default("3333"),
 });
 
 const _env = envSchema.safeParse(process.env);
 
 if (!_env.success) {
-  console.error("Is missing key on '.env' file", _env.error.format());
+  const keyMissing = _env.error.errors[0].path[0];
+  const reason = _env.error.errors[0].message;
 
-  throw new Error("Is missing key on '.env' file");
+  const errorMessage = `Is missing key '${keyMissing}' on '.env' file\n${reason}\n\n`;
+
+  throw new Error(errorMessage);
 }
 
 export const env = _env.data;
