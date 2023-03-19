@@ -2,19 +2,16 @@ import { FastifyInstance } from "fastify";
 
 import { validateSessionId } from "../middleware/validateSessionId";
 
-import {
-  create,
-  findMany,
-  findOne,
-  summary,
-} from "../controller/transactions.controller";
+import * as controller from "../controller/transactions.controller";
 
 export const transactionsRoutes = async (app: FastifyInstance) => {
-  app.get("/findMany", { preHandler: [validateSessionId] }, findMany);
+  app.addHook("preHandler", validateSessionId);
 
-  app.get("/findOne/:id", { preHandler: [validateSessionId] }, findOne);
+  app.get("/findMany", controller.findMany);
 
-  app.get("/summary", { preHandler: [validateSessionId] }, summary);
+  app.get("/findOne/:id", controller.findOne);
 
-  app.post("/create", create);
+  app.get("/summary", controller.summary);
+
+  app.post("/create", controller.create);
 };
