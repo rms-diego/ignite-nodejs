@@ -1,5 +1,7 @@
 import { UsersRepository } from "@/repositories/users-repository";
 
+import { Exception } from "@/Exception";
+
 import bcrypt from "bcrypt";
 
 type RegisterUseCaseDTO = {
@@ -16,7 +18,7 @@ export const registerUseCase = async ({
   const userAlreadyExists = await UsersRepository.findByEmail(email);
 
   if (userAlreadyExists) {
-    throw new Error("User already exists");
+    throw new Exception("User already exists", 409);
   }
 
   const passwordHash = await bcrypt.hash(password, 6);
