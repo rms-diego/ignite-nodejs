@@ -1,4 +1,4 @@
-import { routes } from "@/routes";
+import { routes } from "@/http/routes";
 import fastify from "fastify";
 
 const app = fastify({
