@@ -17,7 +17,13 @@ export const register = async (
 
   const { name, email, password } = createUserSchema.parse(request.body);
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const userAlreadyExists = await client.user.findUnique({ where: { email } });
+
+  if (userAlreadyExists) {
+    return response.status(409).send({ error: "User already exists" });
+  }
+
+  const passwordHash = await bcrypt.hash(password, 6);
 
   await client.user.create({
     data: {
