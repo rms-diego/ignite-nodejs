@@ -1,4 +1,4 @@
-import { client } from "@/lib/prisma";
+import { UsersRepository } from "@/repositories/users-repository";
 
 import bcrypt from "bcrypt";
 
@@ -13,7 +13,7 @@ export const registerUseCase = async ({
   email,
   password,
 }: RegisterUseCaseDTO) => {
-  const userAlreadyExists = await client.user.findUnique({ where: { email } });
+  const userAlreadyExists = await UsersRepository.findByEmail(email);
 
   if (userAlreadyExists) {
     throw new Error("User already exists");
@@ -21,11 +21,5 @@ export const registerUseCase = async ({
 
   const passwordHash = await bcrypt.hash(password, 6);
 
-  await client.user.create({
-    data: {
-      name,
-      email,
-      passwordHash,
-    },
-  });
+  await UsersRepository.create({ name, email, passwordHash });
 };
