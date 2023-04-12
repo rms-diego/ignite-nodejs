@@ -1,4 +1,4 @@
-import { Exception } from "@/Exception";
+import { Exception } from "@/errors/Exception";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 
 export const errorHandler = async (

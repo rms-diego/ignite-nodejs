@@ -1,7 +1,7 @@
 import fastify from "fastify";
 
 import { routes } from "@/http/routes";
-import { errorHandler } from "@/http/error-handler";
+import { errorHandler } from "@/errors/error-handler";
 
 const app = fastify({
   logger: true,

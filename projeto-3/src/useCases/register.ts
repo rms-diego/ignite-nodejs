@@ -1,6 +1,6 @@
 import { UsersRepositoryInterface } from "@/repositories/users-repository-interface";
 
-import { Exception } from "@/Exception";
+import { Exception } from "@/errors/Exception";
 
 import bcrypt from "bcrypt";
 
