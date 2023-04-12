@@ -1,8 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
-import { registerUseCase } from "@/useCases/register";
+import { RegisterUseCase } from "@/useCases/register";
+
+import { client } from "@/lib/prisma";
 
 import { z as zod } from "zod";
+import { UsersRepository } from "@/repositories/users-repository";
 
 export const register = async (
   request: FastifyRequest,
@@ -16,7 +19,10 @@ export const register = async (
 
   const { name, email, password } = createUserSchema.parse(request.body);
 
-  await registerUseCase({ name, email, password });
+  const usersRepository = new UsersRepository(client);
+  const registerUseCase = new RegisterUseCase(usersRepository);
+
+  await registerUseCase.execute({ name, email, password });
 
   return response.status(201).send();
 };

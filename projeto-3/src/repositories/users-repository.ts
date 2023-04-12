@@ -1,18 +1,22 @@
-import { client } from "@/lib/prisma";
-
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 export class UsersRepository {
-  static async findByEmail(email: string) {
-    const userFound = await client.user.findUnique({
+  private client: PrismaClient;
+
+  constructor(client: PrismaClient) {
+    this.client = client;
+  }
+
+  async findByEmail(email: string) {
+    const userFound = await this.client.user.findUnique({
       where: { email },
     });
 
     return userFound;
   }
 
-  static async create({ name, passwordHash, email }: Prisma.UserCreateInput) {
-    const userCreated = await client.user.create({
+  async create({ name, passwordHash, email }: Prisma.UserCreateInput) {
+    const userCreated = await this.client.user.create({
       data: {
         name,
         email,

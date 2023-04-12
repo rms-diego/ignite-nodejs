@@ -1,5 +1,3 @@
-import { UsersRepository } from "@/repositories/users-repository";
-
 import { Exception } from "@/Exception";
 
 import bcrypt from "bcrypt";
@@ -10,18 +8,22 @@ type RegisterUseCaseDTO = {
   password: string;
 };
 
-export const registerUseCase = async ({
-  name,
-  email,
-  password,
-}: RegisterUseCaseDTO) => {
-  const userAlreadyExists = await UsersRepository.findByEmail(email);
+export class RegisterUseCase {
+  private usersRepository: any;
 
-  if (userAlreadyExists) {
-    throw new Exception("User already exists", 409);
+  constructor(usersRepository: any) {
+    this.usersRepository = usersRepository;
   }
 
-  const passwordHash = await bcrypt.hash(password, 6);
+  async execute({ name, email, password }: RegisterUseCaseDTO) {
+    const userAlreadyExists = await this.usersRepository.findByEmail(email);
 
-  await UsersRepository.create({ name, email, passwordHash });
-};
+    if (userAlreadyExists) {
+      throw new Exception("User already exists", 409);
+    }
+
+    const passwordHash = await bcrypt.hash(password, 6);
+
+    await this.usersRepository.create({ name, email, passwordHash });
+  }
+}
