@@ -1,3 +1,5 @@
+import { UsersRepositoryInterface } from "@/repositories/users-repository-interface";
+
 import { Exception } from "@/Exception";
 
 import bcrypt from "bcrypt";
@@ -9,9 +11,9 @@ type RegisterUseCaseDTO = {
 };
 
 export class RegisterUseCase {
-  private usersRepository: any;
+  private usersRepository: UsersRepositoryInterface;
 
-  constructor(usersRepository: any) {
+  constructor(usersRepository: UsersRepositoryInterface) {
     this.usersRepository = usersRepository;
   }
 

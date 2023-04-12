@@ -5,7 +5,7 @@ import { RegisterUseCase } from "@/useCases/register";
 import { client } from "@/lib/prisma";
 
 import { z as zod } from "zod";
-import { UsersRepository } from "@/repositories/users-repository";
+import { UsersRepository } from "@/repositories/prisma/users-repository";
 
 export const register = async (
   request: FastifyRequest,

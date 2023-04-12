@@ -1,6 +1,8 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
-export class UsersRepository {
+import { UsersRepositoryInterface } from "../users-repository-interface";
+
+export class UsersRepository implements UsersRepositoryInterface {
   private client: PrismaClient;
 
   constructor(client: PrismaClient) {
@@ -15,7 +17,7 @@ export class UsersRepository {
     return userFound;
   }
 
-  async create({ name, passwordHash, email }: Prisma.UserCreateInput) {
+  async create({ name, email, passwordHash }: Prisma.UserCreateInput) {
     const userCreated = await this.client.user.create({
       data: {
         name,
